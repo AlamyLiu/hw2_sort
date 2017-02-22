@@ -1,0 +1,7 @@
+
+./sort --input=input.txt --digitsPerNode=2 --algorithm=select --output=out.txt [--debug]
+
+./sort -i input.txt -n 2 -a select -o out.txt [-d]
+
+./sort -i input.txt -n 3 -a insert -o out.txt [-d]
+
