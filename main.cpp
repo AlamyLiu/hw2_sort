@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 		/* Validate format /^[+-][[:digit:]]$*/
 		/* if (! validate_format()) continue */
 
-		intList.addInteger( line );
+//		intList.addInteger( line );
 	}
 #if 0
     //get line input from file

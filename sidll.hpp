@@ -2,8 +2,8 @@
  * Signed Integer Double Linked-List
  */
 
-#ifndef	_SIDLL_HPP_
-#define	_SIDLL_HPP_
+#ifndef	_SIDLLIST_HPP_
+#define	_SIDLLIST_HPP_
 
 #include <string>
 #include <iostream>		/* std::cout, std::endl */
@@ -17,11 +17,13 @@ namespace sidll
 }
 #endif
 
-class SignedIntegerDoubleLinkedList {
+class SIDLList {
 
-private:
+protected:
 	class Node {
-		friend class SignedIntegerDoubleLinkedList;
+		friend class SIDLList;
+		friend ostream &operator<<(ostream &out, const SIDLList &L);
+
 		string value;
 		Node *prev;
 		Node *next;
@@ -36,19 +38,19 @@ private:
 
 public:
 	/* Constructor / Destructor */
-	SignedIntegerDoubleLinkedList ( int sign, string num, int digits );
-	SignedIntegerDoubleLinkedList ( string num, int digits )
-		: SignedIntegerDoubleLinkedList( 1, num, digits )
+	SIDLList ( int sign, string num, int digits );
+	SIDLList ( string num, int digits )
+		: SIDLList( 1, num, digits )
 		{};
-	SignedIntegerDoubleLinkedList ( string num )
-		: SignedIntegerDoubleLinkedList( num, 1 )
+	SIDLList ( string num )
+		: SIDLList( num, 1 )
 		{};
-	SignedIntegerDoubleLinkedList ()
-		: SignedIntegerDoubleLinkedList( string("0"), 1 )
+	SIDLList ()
+		: SIDLList( string("0"), 1 )
 		{};
 
 #if 0
-	SignedIntegerDoubleLinkedList () {
+	SIDLList () {
 		head = NULL;
 		tail = NULL;
 
@@ -57,7 +59,7 @@ public:
 		node_num = 0;
 	};
 #endif
-	~SignedIntegerDoubleLinkedList() {
+	~SIDLList() {
 		Node *pNode;
 		while (pHead) {
 			pNode = pHead;
@@ -76,19 +78,37 @@ public:
 	bool isEmpty() {
 		return (pHead == NULL);
 	}
+#if 0
+	friend ostream& operator<<(ostream& out, const SIDLList& list);
+#else
+	friend ostream &operator<<(ostream &out, const SIDLList &L) {
+		Node *pNode = L.pHead;
 
+		while (true) {
+			out << pNode->value;
+			pNode = pNode->next;
+
+			if (pNode == L.pHead)
+				break;
+			else
+				out << " ";
+		}
+	}
+
+#endif
 };
+
 
 class INTList
 {
 private:
 	class Node {
 		friend class INTList;
-		SignedIntegerDoubleLinkedList integer;
+		SIDLList integer;
 		Node *prev;
 		Node *next;
 
-		Node( string integer );
+		Node( string signInteger );
 	};
 
 	Node	*pHead;
@@ -116,4 +136,4 @@ public:
 class NUMBER
 #endif
 
-#endif	/* _SIDLL_HPP_ */
+#endif	/* _SIDLLIST_HPP_ */
