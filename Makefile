@@ -4,7 +4,7 @@ CFLAGS = -I. -std=c++11 -D_DEBUG -ggdb
 LIBS =
 TARGET = sort
 
-HEADERS = sidll.hpp DebugW.hpp
+HEADERS = sidll.hpp DebugW.hpp SIntFormat.hpp
 SOURCES = sidll.cpp DebugW.cpp main.cpp
 
 OBJS = $(patsubst %.cpp, %.o, $(SOURCES))

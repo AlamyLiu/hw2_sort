@@ -6,11 +6,16 @@
 #include <iostream>
 #include <string>
 #include <fstream>		// ifstream, ofstream
+#include <stdlib.h>		// atoi
 #include <getopt.h>		// getopt_long()
 #include <unistd.h>		// getopt()
+//#include <regex>		// regex
+#include <list>			// list of SIDLList class
+#include "SIntFormat.hpp"	// validating Signed Integer format
 #include "sidll.hpp"		// Double Linked-List
 #include "DebugW.hpp"		// Debug
 
+using namespace std;
 
 const struct option long_opts[] =
 {
@@ -45,6 +50,45 @@ OPT_FLAG	optFlag = {
 #endif
 
 Debug		*dbg;		/* Warning: should be created before List */
+
+bool validate_format( string signInteger )
+{
+	string str_sign ("+-");
+	string str_digit("0123456789");
+	int sign = 1;		/* Default to positive '+' */
+
+	size_t pSign  = signInteger.find_first_of( str_sign );
+	size_t pValue = signInteger.find_first_not_of( str_sign );
+
+	if (pSign == pValue) {
+		/* No sign: default */
+	} else if (pSign + 1 != pValue) {
+		/* Wrong format */
+		if (pValue < pSign) {
+			/* [:digit:][+-] */
+		} else {
+			/* [+-]+[:digit:] */
+		}
+		cerr << "Wrong Format: " << signInteger << endl;
+		return false;
+	} else {
+		/* pSign < pValue */
+		if (signInteger.at(pSign) == '-')
+			sign = -1;
+
+		/* If it's not '-', it must be '+' : find_first_of() */
+		/* We don't handle '+' case, as it's default case */
+	}
+
+	string integer = signInteger.substr(pValue);	/* [[:digit:]] */
+	if (integer.find_first_not_of( str_digit ) != std::string::npos) {
+		/* [+-][[:digit:]]\w */
+		cerr << "Wrong format: " << signInteger << endl;
+		return false;
+	}
+
+	return true;
+}
 
 int main(int argc, char* argv[])
 {
@@ -131,39 +175,35 @@ int main(int argc, char* argv[])
 
 
 	// Parse input file
-	INTList intList;
+//	INTList intList;
+	list<SIDLList*> intList;
 	string line;
+
 	while (ifs >> line) {
 		/* Trim trailing ... */
 		line.erase(line.find_last_not_of(" \t\n\r\f\v") + 1);
 		*dbg << "--- line: " << line << endl;
 
 		/* Validate format /^[+-][[:digit:]]$*/
-		/* if (! validate_format()) continue */
+		SIntFormat fmt(line);
+		*dbg << "sign = " << fmt.getSign() \
+			<< ", digits = " << fmt.getDigits() << endl;
+		if (! fmt.isValid()) {
+			cerr << "Invalid format: " << line << " ... skip!" << endl;
+			continue;
+		}
 
+		/* Create a linked-list containing the number */
+		SIDLList* num = new(nothrow)
+			SIDLList(fmt.getSign(), fmt.getDigits(), optFlag.digitsPerNode);
+
+		intList.push_front( num );
 //		intList.addInteger( line );
 	}
 #if 0
     //get line input from file
     while (getline(ifs, line)){
         *dbg << "--- Parsing " << line << endl;
-
-        Formula f(line);
-	*dbg << "L-Value = " << f.getLValue() << endl;
-	*dbg << "R-Value = " << f.getRValue() << endl;
-	*dbg << "Operator= " << f.getOP() << endl;
-
-	string num1 = f.getLValue();
-	string num2 = f.getRValue();
-	int fOP     = f.getOP();
-
-        *dbg << "num1 = " << num1 << endl;
-        *dbg << "num2 = " << num2 << endl;
-	*dbg << "operation = " << fOP << endl;
-
-        DList* listOne = new DList(num1,digitsPerNode);
-        DList* listTwo = new DList(num2,digitsPerNode);
-        DList* result = new DList(digitsPerNode);
 
         listOne->printList( dbg, "value 1" );
         listTwo->printList( dbg, "value 2" );

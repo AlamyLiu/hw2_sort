@@ -4,6 +4,8 @@
 #include <iomanip>		/* std::setfill, std::setw */
 #include "sidll.hpp"
 
+using namespace std;
+
 /*
  * LSN: Least Significant Node
  * MSN: Most Significant Node
@@ -91,6 +93,7 @@ ostream& operator<<(ostream& out, const SIDLList& list)
 #endif
 
 /* ------------------------------------------------------------ */
+#if 0	/* Replaced by <list> class */
 
 /* Append to tail */
 int INTList::addInteger( string signInteger )
@@ -147,3 +150,4 @@ INTList::Node::Node( string signInteger )
 #endif
 }
 
+#endif

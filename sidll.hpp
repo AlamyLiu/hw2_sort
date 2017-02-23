@@ -8,8 +8,6 @@
 #include <string>
 #include <iostream>		/* std::cout, std::endl */
 
-using namespace std;
-
 #if 0
 namespace sidll
 {
@@ -17,14 +15,15 @@ namespace sidll
 }
 #endif
 
+/* To store singed infinite integer */
 class SIDLList {
 
 protected:
 	class Node {
 		friend class SIDLList;
-		friend ostream &operator<<(ostream &out, const SIDLList &L);
+		friend std::ostream &operator<<(std::ostream &out, const SIDLList &L);
 
-		string value;
+		std::string value;
 		Node *prev;
 		Node *next;
 	};
@@ -38,15 +37,15 @@ protected:
 
 public:
 	/* Constructor / Destructor */
-	SIDLList ( int sign, string num, int digits );
-	SIDLList ( string num, int digits )
+	SIDLList ( int sign, std::string num, int digits );
+	SIDLList ( std::string num, int digits )
 		: SIDLList( 1, num, digits )
 		{};
-	SIDLList ( string num )
+	SIDLList ( std::string num )
 		: SIDLList( num, 1 )
 		{};
 	SIDLList ()
-		: SIDLList( string("0"), 1 )
+		: SIDLList( std::string("0"), 1 )
 		{};
 
 #if 0
@@ -69,8 +68,8 @@ public:
 	}
 
 	/* Element(Node) operation */
-	int insertAtTail( string value );
-	int insertAtHead( string value );
+	int insertAtTail( std::string value );
+	int insertAtHead( std::string value );
 	int insertAtTail( int value );
 	int insertAtHead( int value );
 
@@ -81,7 +80,7 @@ public:
 #if 0
 	friend ostream& operator<<(ostream& out, const SIDLList& list);
 #else
-	friend ostream &operator<<(ostream &out, const SIDLList &L) {
+	friend std::ostream &operator<<(std::ostream &out, const SIDLList &L) {
 		Node *pNode = L.pHead;
 
 		while (true) {
@@ -98,7 +97,7 @@ public:
 #endif
 };
 
-
+#if 0	/* Replaced by <list> class */
 class INTList
 {
 private:
@@ -108,7 +107,7 @@ private:
 		Node *prev;
 		Node *next;
 
-		Node( string signInteger );
+		Node( std::string signInteger );
 	};
 
 	Node	*pHead;
@@ -127,10 +126,10 @@ public:
 		};
 	}
 
-	int	addInteger( string integer );	/* Append to tail */
+	int	addInteger( std::string integer );	/* Append to tail */
 
 };
-
+#endif
 
 #if 0
 class NUMBER
