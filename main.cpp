@@ -176,7 +176,8 @@ int main(int argc, char* argv[])
 
 	// Parse input file
 //	INTList intList;
-	list<SIDLList*> intList;
+//	std::list<std::unique_ptr<SIDLList>> intList;
+	std::list<SIDLList*> intList;
 	string line;
 
 	while (ifs >> line) {
@@ -186,7 +187,7 @@ int main(int argc, char* argv[])
 
 		/* Validate format /^[+-][[:digit:]]$*/
 		SIntFormat fmt(line);
-		*dbg << "sign = " << fmt.getSign() \
+		*dbg << "Format: sign = " << fmt.getSign() \
 			<< ", digits = " << fmt.getDigits() << endl;
 		if (! fmt.isValid()) {
 			cerr << "Invalid format: " << line << " ... skip!" << endl;
@@ -197,37 +198,21 @@ int main(int argc, char* argv[])
 		SIDLList* num = new(nothrow)
 			SIDLList(fmt.getSign(), fmt.getDigits(), optFlag.digitsPerNode);
 
-		intList.push_front( num );
+		*dbg << *num;
+
+		intList.push_back( num );
 //		intList.addInteger( line );
 	}
-#if 0
-    //get line input from file
-    while (getline(ifs, line)){
-        *dbg << "--- Parsing " << line << endl;
 
-        listOne->printList( dbg, "value 1" );
-        listTwo->printList( dbg, "value 2" );
-        result->printList( dbg, "result" );
+	*dbg << intList.size() << " numbers" << endl;
 
-        //addition operation here
-	if (fOP == MATH_ADD)
-        {
-            result->addTwoList(listOne, listTwo);
-        }
-        //multiplication operation here
-	else if (fOP == MATH_MUL)
-        {
-            result->multiplyTwoList(listOne, listTwo);
-        }
-        result->printList( dbg, "result" );	// Debug
+	// Free resources
+	for (auto&& num : intList) {
+		delete num;
+	}
+	intList.clear();
 
-        cout << num1 << f.getOPChar() << num2 << "=";
-        result->printList();
-    }
-    cout << endl;
-#endif
+	delete dbg;
 
-    delete dbg;
-
-    return 0;
+	return 0;
 }

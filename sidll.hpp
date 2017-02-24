@@ -8,12 +8,6 @@
 #include <string>
 #include <iostream>		/* std::cout, std::endl */
 
-#if 0
-namespace sidll
-{
-
-}
-#endif
 
 /* To store singed infinite integer */
 class SIDLList {
@@ -29,7 +23,6 @@ protected:
 	};
 
 	Node	*pHead;
-	Node	*pTail;
 
 	int	digit_per_node;	/* How many digits per Node */
 	int	sign;		/* POSITIVE (1) or NEGATIVE (-1) */
@@ -60,7 +53,7 @@ public:
 #endif
 	~SIDLList() {
 		Node *pNode;
-		while (pHead) {
+		while (list_len--) {
 			pNode = pHead;
 			pHead = pHead->next;
 			delete pNode;
@@ -83,6 +76,7 @@ public:
 	friend std::ostream &operator<<(std::ostream &out, const SIDLList &L) {
 		Node *pNode = L.pHead;
 
+		out << "SIDLList: (" << L.sign << ") ";
 		while (true) {
 			out << pNode->value;
 			pNode = pNode->next;
@@ -92,6 +86,7 @@ public:
 			else
 				out << " ";
 		}
+		out << std::endl;
 	}
 
 #endif
@@ -131,8 +126,5 @@ public:
 };
 #endif
 
-#if 0
-class NUMBER
-#endif
 
 #endif	/* _SIDLLIST_HPP_ */
