@@ -4,8 +4,8 @@ CFLAGS = -I. -std=c++11 -D_DEBUG -ggdb
 LIBS =
 TARGET = sort
 
-HEADERS = sidll.hpp DebugW.hpp SIntFormat.hpp
-SOURCES = sidll.cpp DebugW.cpp main.cpp
+HEADERS = sidll.hpp DebugW.hpp SIntFormat.hpp MultiSort.hpp
+SOURCES = sidll.cpp DebugW.cpp MultiSort.cpp main.cpp
 
 OBJS = $(patsubst %.cpp, %.o, $(SOURCES))
 

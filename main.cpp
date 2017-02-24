@@ -13,6 +13,7 @@
 #include <list>			// list of SIDLList class
 #include "SIntFormat.hpp"	// validating Signed Integer format
 #include "sidll.hpp"		// Double Linked-List
+#include "MultiSort.hpp"	// Sorting methods
 #include "DebugW.hpp"		// Debug
 
 using namespace std;
@@ -26,8 +27,6 @@ const struct option long_opts[] =
 	{"debug",	no_argument,		0,	'd'},
 	{0,0,0,0},
 };
-
-enum SORT_ALGORITHM {UNKNOWN, SELECT, INSERT, MERGE, HEAP, QUICK};
 
 typedef struct _OPT_FLAGS {
 	string	iFile;		/* Input file */
@@ -175,9 +174,7 @@ int main(int argc, char* argv[])
 
 
 	// Parse input file
-//	INTList intList;
-//	std::list<std::unique_ptr<SIDLList>> intList;
-	std::list<SIDLList*> intList;
+	MultiSort mySort;
 	string line;
 
 	while (ifs >> line) {
@@ -200,17 +197,21 @@ int main(int argc, char* argv[])
 
 		*dbg << *num;
 
-		intList.push_back( num );
+		mySort.addItem( num );
+//		intList.push_back( num );
 //		intList.addInteger( line );
 	}
 
-	*dbg << intList.size() << " numbers" << endl;
+//	*dbg << intList.size() << " numbers" << endl;
+	mySort.printAllItems();
 
 	// Free resources
+#if 0
 	for (auto&& num : intList) {
 		delete num;
 	}
 	intList.clear();
+#endif
 
 	delete dbg;
 
