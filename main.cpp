@@ -227,6 +227,8 @@ int main(int argc, char* argv[])
 	cout << "----- Result -----" << endl;
 	cout << mySort;
 
+	/* And the statictics */
+	mySort.statistics( optFlag.oFile, algorithm );
 
 	// Free resources
 	mySort.free();

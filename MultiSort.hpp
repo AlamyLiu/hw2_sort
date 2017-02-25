@@ -35,6 +35,19 @@ class MultiSort
 private:
 	std::list<SIDLList*> intList;
 
+	unsigned int	sort_compare_count;
+	unsigned int	sort_swap_count;
+	unsigned int	bigO_compare_count;
+	unsigned int	bigO_swap_count;
+
+protected:
+	void resetCount() {
+		sort_compare_count = 0;
+		sort_swap_count = 0;
+		bigO_compare_count = 0;
+		bigO_swap_count = 0;
+	}
+
 public:
 	/* Constructor/Destructor */
 	MultiSort() {};
@@ -62,6 +75,8 @@ public:
 		}
 		intList.clear();
 	}
+
+	void statistics( std::string& oFile, std::string& algorithm );
 
 #if 0
 	friend std::ostream &operator<<(std::ostream &out, const MultiSort &S) {

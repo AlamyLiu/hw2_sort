@@ -32,6 +32,7 @@ int MultiSort::SelectSort()
 	int rc;
 
 	*dbg << "Select sort ... " << std::endl;
+	resetCount();
 	typename std::list<SIDLList*>::iterator i, j, min;
 
 	/* iterator 'i' walks over the solt, moving the smallest to it */
@@ -43,6 +44,8 @@ int MultiSort::SelectSort()
 		j = std::next( i );
 		for ( ; j != intList.end(); j++) {
 			rc = (*min)->compare(*j);
+			bigO_compare_count++;
+			sort_compare_count++;
 			*dbg << std::setw(2) << rc << ", ";
 
 			/* found smaller one */
@@ -52,8 +55,10 @@ int MultiSort::SelectSort()
 		*dbg << std::endl;
 
 		/* Now we got the smllest one, move it to solt 'i' */
+		bigO_swap_count++;
 		if (min != i) {
 			std::swap(*i, *min);
+			sort_swap_count++;
 		}
 	}
 
@@ -86,6 +91,34 @@ int MultiSort::QuickSort()
 	std::cerr << "QuickSort: Not supported yet!" << std::endl;
 
 	return 0;
+}
+
+/* ------------------------------------------------------------ */
+
+
+void MultiSort::statistics( std::string& oFile, std::string& algorithm )
+{
+	/* if oFile does not exist
+	 *  a) create file
+	 *  b) header
+	 */
+
+#if 0	/* Header */
+	algorithm  #numbers(n)  #Comparisons  #Swaps  #bigOComparisons  #bigOSwaps
+#endif
+	/* Append to file the statistics */
+
+	/* Ignore file for now */
+	std::cout << "algorithm  #numbers(n)  #Comparisons  #Swaps" \
+		"  #bigOComparisons  #bigOSwaps" << std::endl;
+
+	std::cout << std::setw( 9) << algorithm;
+	std::cout << std::setw(13) << size();
+	std::cout << std::setw(14) << sort_compare_count;
+	std::cout << std::setw( 8) << sort_swap_count;
+	std::cout << std::setw(18) << bigO_compare_count;
+	std::cout << std::setw(12) << bigO_swap_count;
+	std::cout << std::endl;
 }
 
 /* ------------------------------------------------------------ */
