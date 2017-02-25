@@ -18,37 +18,72 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iomanip>		/* setw */
+#include "DebugW.hpp"
 #include "MultiSort.hpp"
+
+extern Debug	*dbg;
 
 /* ------------------------------------------------------------
  * Sorting methods
  */
 int MultiSort::SelectSort()
 {
+	int rc;
+
+	*dbg << "Select sort ... " << std::endl;
+	typename std::list<SIDLList*>::iterator i, j, min;
+
+	/* iterator 'i' walks over the solt, moving the smallest to it */
+	for (i = intList.begin(); i != intList.end(); i++) {
+		min = i;
+		*dbg << "compare: ";
+
+		/* iterator 'j' walks over the rest, find the smallest one */
+		j = std::next( i );
+		for ( ; j != intList.end(); j++) {
+			rc = (*min)->compare(*j);
+			*dbg << std::setw(2) << rc << ", ";
+
+			/* found smaller one */
+			if (rc > 0)
+				min = j;
+		}
+		*dbg << std::endl;
+
+		/* Now we got the smllest one, move it to solt 'i' */
+		if (min != i) {
+			std::swap(*i, *min);
+		}
+	}
 
 	return 0;
 }
 
 int MultiSort::InsertSort()
 {
+	std::cerr << "InsertSort: Not supported yet!" << std::endl;
 
 	return 0;
 }
 
 int MultiSort::MergeSort()
 {
+	std::cerr << "MergeSort: Not supported yet!" << std::endl;
 
 	return 0;
 }
 
 int MultiSort::HeapSort()
 {
+	std::cerr << "HeapSort: Not supported yet!" << std::endl;
 
 	return 0;
 }
 
 int MultiSort::QuickSort()
 {
+	std::cerr << "QuickSort: Not supported yet!" << std::endl;
 
 	return 0;
 }

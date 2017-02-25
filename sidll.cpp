@@ -75,6 +75,49 @@ int SIDLList::insertAtHead( int value )
 	return 0;
 }
 
+/* Return: -1) smaller; 0) equal; 1) bigger */
+int SIDLList::compare(SIDLList *his)
+{
+	int rc;
+
+#if 1	/* This should not happen */
+	if ((this->list_len == 0) || (his->list_len == 0)) {
+		cerr << "What's going on ?" << endl;
+		return -2;
+	}
+#endif
+
+	/* 1. Compare sign */
+	if (this->sign != his->sign)
+		return this->sign;
+
+	/* 2. Compare length (same sign) */
+	/* Assume it's Positive, reverse result if Negative */
+	rc = this->list_len - his->list_len;
+	if (rc != 0) {
+		/* Adjust to (-1) & (1) */
+		rc = (rc > 0) ? 1 : (-1);
+
+		/* Reverse if Negative */
+		if (this->sign == -1)
+			rc = -rc;
+
+		return rc;
+	}
+
+	/* 3. Compare value (same sign, same length) */
+	int myValue = stoi(this->pHead->value);
+	int hisValue = stoi(his->pHead->value);
+	rc = (myValue - hisValue);
+	if (rc != 0) {
+		rc = (rc > 0) ? 1 : (-1);
+		if (this->sign == -1)
+			rc = -rc;
+	}
+	return rc;
+}
+
+
 #if 0
 std::ostream &operator<<(std::ostream &out, const SIDLList &L)
 {

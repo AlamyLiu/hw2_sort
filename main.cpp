@@ -205,6 +205,29 @@ int main(int argc, char* argv[])
 	*dbg << mySort.size() << " numbers" << endl;
 	*dbg << mySort;
 
+
+	/* Now it's time to SORT */
+	int rc;
+	switch (optFlag.algorithm) {
+	case SELECT:	rc = mySort.SelectSort();	break;
+	case INSERT:	rc = mySort.InsertSort();	break;
+	case MERGE:	rc = mySort.MergeSort();	break;
+	case HEAP:	rc = mySort.HeapSort();		break;
+	case QUICK:	rc = mySort.QuickSort();	break;
+	default:
+		rc = -EINVAL;
+		cerr << "This should not happen!" << endl;
+		break;
+	} /* End of switch(optFlag.algorithm) */
+
+	/* skip: check 'rc' */
+
+
+	/* Now the result */
+	cout << "----- Result -----" << endl;
+	cout << mySort;
+
+
 	// Free resources
 	mySort.free();
 	delete dbg;

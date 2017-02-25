@@ -86,11 +86,13 @@ public:
 		return sign;
 	}
 
+	int compare(SIDLList *list);
+
 #if 1
 	friend std::ostream &operator<<(std::ostream &out, const SIDLList &L) {
 		Node *pNode = L.pHead;
 
-		out << "SIDLList: (" << L.sign << ") ";
+		out << "SIDLList:" << &L << ": (" << L.sign << ") ";
 		while (true) {
 			out << pNode->value;
 			pNode = pNode->next;
