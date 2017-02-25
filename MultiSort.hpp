@@ -56,6 +56,13 @@ public:
 		return intList.size();
 	}
 
+	void free() {
+		for (const auto& i : intList) {
+			delete i;
+		}
+		intList.clear();
+	}
+
 #if 0
 	friend std::ostream &operator<<(std::ostream &out, const MultiSort &S) {
 		for (const auto& i : S.intList) {

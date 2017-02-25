@@ -206,13 +206,7 @@ int main(int argc, char* argv[])
 	*dbg << mySort;
 
 	// Free resources
-#if 0
-	for (auto&& num : intList) {
-		delete num;
-	}
-	intList.clear();
-#endif
-
+	mySort.free();
 	delete dbg;
 
 	return 0;
