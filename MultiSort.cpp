@@ -55,15 +55,13 @@ int MultiSort::QuickSort()
 
 /* ------------------------------------------------------------ */
 
-int MultiSort::addItem( SIDLList* num )
+std::ostream &operator<<(std::ostream &out, const MultiSort &S)
 {
+	for (const auto& i : S.intList) {
+		out << *i;
+	} /* End of for(i) */
 
-	return 0;
-}
-
-int MultiSort::printAllItems()
-{
-
-	return 0;
+	out << std::endl;
+	return out;
 }
 

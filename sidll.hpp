@@ -20,6 +20,13 @@ protected:
 		std::string value;
 		Node *prev;
 		Node *next;
+	public:
+		std::string& getValue() {
+			return value;
+		}
+		Node* getNext() {
+			return next;
+		}
 	};
 
 	Node	*pHead;
@@ -70,9 +77,16 @@ public:
 	bool isEmpty() {
 		return (pHead == NULL);
 	}
-#if 0
-	friend ostream& operator<<(ostream& out, const SIDLList& list);
-#else
+
+	Node* getHead() {
+		return pHead;
+	}
+
+	int getSign() {
+		return sign;
+	}
+
+#if 1
 	friend std::ostream &operator<<(std::ostream &out, const SIDLList &L) {
 		Node *pNode = L.pHead;
 
@@ -87,44 +101,11 @@ public:
 				out << " ";
 		}
 		out << std::endl;
-	}
 
+		return out;
+	}
 #endif
 };
-
-#if 0	/* Replaced by <list> class */
-class INTList
-{
-private:
-	class Node {
-		friend class INTList;
-		SIDLList integer;
-		Node *prev;
-		Node *next;
-
-		Node( std::string signInteger );
-	};
-
-	Node	*pHead;
-	Node	*pTail;
-	int	list_len;	/* List length (Number of Node) */
-
-public:
-	/* Constructor / Destructor */
-	INTList() : pHead(NULL), pTail(NULL), list_len(0) {};
-	~INTList() {
-		Node *pNode;
-		while (pHead) {
-			pNode = pHead;
-			pHead = pHead->next;
-			delete pNode;
-		};
-	}
-
-	int	addInteger( std::string integer );	/* Append to tail */
-
-};
-#endif
 
 
 #endif	/* _SIDLLIST_HPP_ */

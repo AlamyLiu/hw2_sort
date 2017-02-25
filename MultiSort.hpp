@@ -22,13 +22,16 @@
 #define	_MY_SORT_HPP_
 
 #include <list>
+#include <iostream>
+#include "sidll.hpp"
+
 
 enum SORT_ALGORITHM {UNKNOWN, SELECT, INSERT, MERGE, HEAP, QUICK};
 
-class SIDLList;
-
 class MultiSort
 {
+	friend std::ostream &operator<<(std::ostream &out, const MultiSort &S);
+
 private:
 	std::list<SIDLList*> intList;
 
@@ -45,9 +48,28 @@ public:
 	int QuickSort();
 
 	/* Misc methods */
-	int addItem( SIDLList* num );
+	int addItem( SIDLList* num ) {
+		intList.push_back( num );
+	}
 
-	int printAllItems();
+	unsigned int size() {
+		return intList.size();
+	}
+
+#if 0
+	friend std::ostream &operator<<(std::ostream &out, const MultiSort &S) {
+		for (const auto& i : S.intList) {
+//			out << const_cast<SIDLList*>(i);
+			out << *i;
+		}
+
+		out << std::endl;
+		return out;
+	}
+#endif
+
+
 };
+
 
 #endif	/* _MY_SORT_HPP_ */

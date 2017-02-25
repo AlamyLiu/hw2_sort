@@ -76,18 +76,22 @@ int SIDLList::insertAtHead( int value )
 }
 
 #if 0
-ostream& operator<<(ostream& out, const SIDLList& list)
+std::ostream &operator<<(std::ostream &out, const SIDLList &L)
 {
-	SIDLList::Node *pNode = list.pHead;
+	SIDLList::Node *pNode = L.pHead;
+
+	out << "SIDLList: (" << L.sign << ") ";
 	while (true) {
 		out << pNode->value;
 		pNode = pNode->next;
 
-		if (pNode == list.pHead)
+		if (pNode == L.pHead)
 			break;
 		else
 			out << " ";
 	}
+	out << std::endl;
+
 	return out;
 }
 #endif

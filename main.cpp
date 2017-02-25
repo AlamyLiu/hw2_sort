@@ -202,8 +202,8 @@ int main(int argc, char* argv[])
 //		intList.addInteger( line );
 	}
 
-//	*dbg << intList.size() << " numbers" << endl;
-	mySort.printAllItems();
+	*dbg << mySort.size() << " numbers" << endl;
+	*dbg << mySort;
 
 	// Free resources
 #if 0
