@@ -220,15 +220,15 @@ int main(int argc, char* argv[])
 		break;
 	} /* End of switch(optFlag.algorithm) */
 
-	/* skip: check 'rc' */
+	/* Output the result */
+	if (! rc) {
+		/* Now the result */
+		cout << "----- Result -----" << endl;
+		cout << mySort;
 
-
-	/* Now the result */
-	cout << "----- Result -----" << endl;
-	cout << mySort;
-
-	/* And the statictics */
-	mySort.statistics( optFlag.oFile, algorithm );
+		/* And the statictics */
+		mySort.statistics( optFlag.oFile, algorithm );
+	}
 
 	// Free resources
 	mySort.free();

@@ -19,6 +19,7 @@
 */
 
 #include <iomanip>		/* setw */
+#include <cerrno>
 #include "DebugW.hpp"
 #include "MultiSort.hpp"
 
@@ -69,28 +70,28 @@ int MultiSort::InsertSort()
 {
 	std::cerr << "InsertSort: Not supported yet!" << std::endl;
 
-	return 0;
+	return -ENOSYS;
 }
 
 int MultiSort::MergeSort()
 {
 	std::cerr << "MergeSort: Not supported yet!" << std::endl;
 
-	return 0;
+	return -ENOSYS;
 }
 
 int MultiSort::HeapSort()
 {
 	std::cerr << "HeapSort: Not supported yet!" << std::endl;
 
-	return 0;
+	return -ENOSYS;
 }
 
 int MultiSort::QuickSort()
 {
 	std::cerr << "QuickSort: Not supported yet!" << std::endl;
 
-	return 0;
+	return -ENOSYS;
 }
 
 /* ------------------------------------------------------------ */
