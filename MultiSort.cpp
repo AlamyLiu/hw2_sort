@@ -97,29 +97,21 @@ int MultiSort::QuickSort()
 /* ------------------------------------------------------------ */
 
 
-void MultiSort::statistics( std::string& oFile, std::string& algorithm )
+void MultiSort::statistics( std::ofstream& ofs, std::string& algorithm )
 {
-	/* if oFile does not exist
-	 *  a) create file
-	 *  b) header
-	 */
+	/* New file, need a header */
+	if (ofs.tellp() == 0) {
+		ofs << "algorithm  #numbers(n)  #Comparisons  #Swaps" \
+			"  #bigOComparisons  #bigOSwaps" << std::endl;
+	}
 
-#if 0	/* Header */
-	algorithm  #numbers(n)  #Comparisons  #Swaps  #bigOComparisons  #bigOSwaps
-#endif
-	/* Append to file the statistics */
-
-	/* Ignore file for now */
-	std::cout << "algorithm  #numbers(n)  #Comparisons  #Swaps" \
-		"  #bigOComparisons  #bigOSwaps" << std::endl;
-
-	std::cout << std::setw( 9) << algorithm;
-	std::cout << std::setw(13) << size();
-	std::cout << std::setw(14) << sort_compare_count;
-	std::cout << std::setw( 8) << sort_swap_count;
-	std::cout << std::setw(18) << bigO_compare_count;
-	std::cout << std::setw(12) << bigO_swap_count;
-	std::cout << std::endl;
+	ofs << std::setw( 9) << algorithm;
+	ofs << std::setw(13) << size();
+	ofs << std::setw(14) << sort_compare_count;
+	ofs << std::setw( 8) << sort_swap_count;
+	ofs << std::setw(18) << bigO_compare_count;
+	ofs << std::setw(12) << bigO_swap_count;
+	ofs << std::endl;
 }
 
 /* ------------------------------------------------------------ */

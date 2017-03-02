@@ -23,6 +23,7 @@
 
 #include <list>
 #include <iostream>
+#include <fstream>      /* ofstream */
 #include "sidll.hpp"
 
 
@@ -76,7 +77,7 @@ public:
 		intList.clear();
 	}
 
-	void statistics( std::string& oFile, std::string& algorithm );
+	void statistics( std::ofstream& ofs, std::string& algorithm );
 
 #if 0
 	friend std::ostream &operator<<(std::ostream &out, const MultiSort &S) {

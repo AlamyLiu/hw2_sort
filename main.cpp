@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 
 	// Options error detection
 	ifstream ifs( optFlag.iFile.c_str() );
-	ofstream ofs( optFlag.oFile.c_str() );
+	ofstream ofs( optFlag.oFile.c_str(), ios::out | ios::app );
 	if (optFlag.iFile.empty()) {
 		cerr << "Input file ?" << endl;
 		return -EINVAL;
@@ -228,8 +228,9 @@ int main(int argc, char* argv[])
 		cout << mySort;
 
 		/* And the statictics */
-		mySort.statistics( optFlag.oFile, algorithm );
+		mySort.statistics( ofs, algorithm );
 	}
+	ofs.close();
 
 	// Free resources
 	mySort.free();
