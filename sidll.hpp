@@ -37,7 +37,7 @@ protected:
 
 public:
 	/* Constructor / Destructor */
-	SIDLList ( int sign, std::string num, int digits );
+	SIDLList ( int sign, std::string& num, int digits );
 	SIDLList ( std::string num, int digits )
 		: SIDLList( 1, num, digits )
 		{};

@@ -12,7 +12,7 @@ using namespace std;
  */
 SIDLList::SIDLList(
 	int sign,
-	string num,
+	string& num,
 	int digits
 ) {
 	this->sign = sign;
