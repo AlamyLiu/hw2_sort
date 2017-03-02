@@ -201,6 +201,7 @@ int main(int argc, char* argv[])
 //		intList.push_back( num );
 //		intList.addInteger( line );
 	}
+	ifs.close();
 
 	*dbg << mySort.size() << " numbers" << endl;
 	*dbg << mySort;
