@@ -68,9 +68,50 @@ int MultiSort::SelectSort()
 
 int MultiSort::InsertSort()
 {
-	std::cerr << "InsertSort: Not supported yet!" << std::endl;
+	int rc;
 
-	return -ENOSYS;
+	*dbg << "Insertion sort ... " << std::endl;
+	resetCount();
+	typename std::list<SIDLList*>::iterator i, j, key;
+
+	/* iterator 'i' walks over the list */
+	/* Skip the 1st one (sorted) */
+	i = std::next( intList.begin() );
+	for ( ; i != intList.end(); i++) {
+		key = i;	/* Compare with front sorted list */
+		*dbg << *key << ":";
+
+		do {
+			j = std::prev( key );
+
+			/* Compare with previous value */
+			rc = (*key)->compare( *j );
+			bigO_compare_count++;
+			sort_compare_count++;
+			*dbg << std::setw(2) << rc << ", ";
+
+			/* Swap if 'key' is smaller (rc < 0) */
+			bigO_swap_count++;
+			if ( rc < 0 ) {
+				std::swap(*j, *key);
+				sort_swap_count++;
+
+				/* swap() doesn't touch iterator */
+				key--;	/* adjust 'key' iterator */
+			}
+		} while ((j != intList.begin()) && (rc < 0));
+
+		/* Adjust bigO: worst case = compare/swap every one */
+		while ( j != intList.begin() ) {
+			bigO_compare_count++;
+			bigO_swap_count++;
+			j--;
+		}
+
+		*dbg << std::endl;
+	}
+
+	return 0;
 }
 
 int MultiSort::MergeSort()
