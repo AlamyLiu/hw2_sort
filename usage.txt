@@ -3,5 +3,10 @@
 
 ./sort -i input.txt -n 2 -a select -o out.txt [-d]
 
-./sort -i input.txt -n 3 -a insert -o out.txt [-d]
+./sort -i in2.txt   -n 3 -a insert -o out.txt [-d]
 
+./sort -i in3.txt   -n 4 -a quick  -o out.txt [-d]
+
+./sort -i in4.txt   -n 5 -a heap   -o out.txt [-d]
+
+./sort -i in3.txt   -n 3 -a merge  -o out.txt [-d]
