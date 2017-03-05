@@ -106,14 +106,24 @@ int SIDLList::compare(SIDLList *his)
 	}
 
 	/* 3. Compare value (same sign, same length) */
-	int myValue = stoi(this->pHead->value);
-	int hisValue = stoi(his->pHead->value);
-	rc = (myValue - hisValue);
-	if (rc != 0) {
-		rc = (rc > 0) ? 1 : (-1);
-		if (this->sign == -1)
-			rc = -rc;
+	Node *pThis = this->pHead;
+	Node *pHis  = his->pHead;
+	for (int len = 0; len < this->list_len; len++) {
+		int myValue = stoi(pThis->value);
+		int hisValue = stoi(pHis->value);
+
+		rc = (myValue - hisValue);
+		if (rc != 0) {
+			rc = (rc > 0) ? 1 : (-1);
+			if (this->sign == -1)
+				rc = -rc;
+			break;
+		}
+
+		pThis = pThis->next;
+		pHis  = pHis->next;
 	}
+
 	return rc;
 }
 
