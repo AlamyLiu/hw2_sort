@@ -128,11 +128,107 @@ int MultiSort::HeapSort()
 	return -ENOSYS;
 }
 
+/* Sort a range of list */
+/* Pivot:
+ *	For list, it's harder to use the middle one.
+ *	Just use the first element, list->begin().
+ * Sorting:
+ *	Ascending order
+ */
+int MultiSort::_quick_sort(std::list<SIDLList*> *left, int depth)
+{
+	int rc;
+	std::list<SIDLList*> right;
+
+	/* only one element, nothing to sort */
+	if (left->size() <= 1) {
+		return 0;
+	}
+
+#if 0
+	/* for debugging */
+	if (depth > 3) {
+		return 0;
+	}
+#endif
+
+	*dbg << "-------------------- depth = " << depth << std::endl;
+	*dbg << *left << std::endl;
+
+	typename std::list<SIDLList*>::iterator i, p, boundary;
+
+	/* range to sort: [p, 1 .. n] */
+	p = left->begin();	/* Pivot = first element */
+	boundary = p;		/* boundary of 'left'/'right' list*/
+
+	/* Partition */
+	/* Walk through list, move smaller one to left side */
+	for (i = std::next( p ); i != left->end(); i++) {
+
+		rc = (*i)->compare( *p );
+		bigO_compare_count++;
+		sort_compare_count++;
+
+		/* Found a smaller one */
+		bigO_swap_count++;
+		if (rc < 0) {
+			advance(boundary, 1);
+			std::swap( *i, *boundary );
+			sort_swap_count++;
+		}
+	}
+	/* Now: [pivot, 1..boundary, boundary+1..n]
+	 * all value in 1..boundary < pivot
+	 */
+
+	/* Note: Could not swap pivot with boundary+1
+	 * or [0] might > pivot after swap
+	 */
+	std::swap( *p, *boundary );
+	bigO_swap_count++;
+	sort_swap_count++;
+
+	/* Now: value[0..boundary-1] < value(pivot) <= value[boundary..n] */
+
+	/* Split list into Left & Right */
+#if 1
+	advance(boundary, 1);
+	/* [0..boundary, boundary+1..n] */
+	/* Left  = [0..boundary] */
+	/* Right = [boundary+1..n] */
+#else
+	/* ERROR: 2 elements: 5 5 */
+
+	/* [0..boundary-1, boundary..n] */
+	/* [0..boundary-1] < pivot <= [boundary..n] */
+	/* Left  = [0..boundary-1] */
+	/* Right = [boundary..n] */
+#endif
+	right.splice(right.begin(), *left, boundary, left->end());
+
+	*dbg << "left# = " << left->size() << std::endl;
+	*dbg << *left;
+	*dbg << "right# = " << right.size() << std::endl;
+	*dbg << right;
+
+
+	/* Recursive to sort Left & Right list */
+	if (left->size() > 1)	_quick_sort(  left, depth+1 );
+	if (right.size() > 1)	_quick_sort( &right, depth+1 );
+
+
+	/* merge back */
+	left->splice( left->end(), right, right.begin(), right.end() );
+}
+
 int MultiSort::QuickSort()
 {
-	std::cerr << "QuickSort: Not supported yet!" << std::endl;
+	*dbg << "Quick sort ... " << std::endl;
 
-	return -ENOSYS;
+	resetCount();
+	_quick_sort( &intList );
+
+	return 0;
 }
 
 /* ------------------------------------------------------------ */

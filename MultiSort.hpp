@@ -41,6 +41,8 @@ private:
 	unsigned int	bigO_compare_count;
 	unsigned int	bigO_swap_count;
 
+	int	_quick_sort(std::list<SIDLList*> *L, int depth = 0);
+
 protected:
 	void resetCount() {
 		sort_compare_count = 0;
