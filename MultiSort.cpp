@@ -167,3 +167,12 @@ std::ostream &operator<<(std::ostream &out, const MultiSort &S)
 	return out;
 }
 
+std::ostream &operator<<(std::ostream &out, const std::list<SIDLList*> &L)
+{
+	for (const auto& i : L) {
+		out << *i;
+	} /* End of for(i) */
+
+	out << std::endl;
+	return out;
+}
