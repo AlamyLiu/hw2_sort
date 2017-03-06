@@ -114,11 +114,116 @@ int MultiSort::InsertSort()
 	return 0;
 }
 
+/*
+ *  0   1   2   . . .   h-1   h   h+1   . . .   n-1   n
+ *   \                    /  iHalf                    /
+ *    \___ left (iL) ____/      \____ right (iR) ____/
+ */
+int MultiSort::_merge_sort(std::list<SIDLList*> *left, int depth)
+{
+	int rc;
+	std::list<SIDLList*> right;
+
+	/* only one element, nothing to sort */
+	if (left->size() <= 1) {
+		return 0;
+	}
+
+#if 0
+	/* for debugging */
+	if (depth > 2) {
+		return 0;
+	}
+#endif
+
+	*dbg << "-------------------- depth = " << depth << std::endl;
+	*dbg << *left << std::endl;
+
+	/* iterator::iHalf points to the middle element */
+	typename std::list<SIDLList*>::iterator iHalf;
+	iHalf = left->begin();
+	advance(iHalf, (left->size() >> 1) );
+
+	/* Split list into Left & Right */
+	/* [0..iHalf-1, iHalf..n] */
+	right.splice(right.begin(), *left, iHalf, left->end());
+
+	*dbg << "left# = " << left->size() << std::endl;
+	*dbg << *left;
+	*dbg << "right# = " << right.size() << std::endl;
+	*dbg << right;
+
+
+	/* Recurse to sort each half */
+	_merge_sort(  left, depth+1 );
+	_merge_sort(&right, depth+1 );
+
+
+	/* Merge left & right */
+	typename std::list<SIDLList*>::iterator iL, iR;
+	iL = left->begin();
+	iR = right.begin();	/* actually: iR alway == right.begin() */
+
+	/* single elimination match */
+	bigO_compare_count = left->size() + right.size() - 1;
+
+	while ( (iL != left->end()) || (iR != right.end()) ) {
+		/* 'left' is empty, get everything from 'right' */
+		if (iL == left->end()) {
+			left->splice(iL, right);
+			break;
+		}
+
+		/* 'right' is empty, get everything from 'left' */
+		if (iR == right.end()) {
+			/* we use left as base, nothing to do */
+			break;
+		}
+
+		rc = (*iL)->compare( *iR );
+		sort_compare_count++;
+
+		/* left < right: get one item from left
+		 * left > right: get one item from right
+		 * left == right: get from left & right (total = two items)
+		 */
+		if (rc <= 0) {
+			/* we use left as base, just move to next */
+			/* 0   1   2   3   . . .   n
+			 *     iL
+			 *         iL
+			 */
+			advance( iL, 1 );
+		}
+		if (rc >= 0) {
+			/*  left: 4 4 *8 10 18    : *iL = 8
+			 * right: *7 15 16        : *iR = 7
+			 *
+			 *  left: 4 4 7 *8 10 18  : *iL = 8
+			 * right: 15 16
+			 */
+			left->splice( iL, right, right.begin() );
+			iR = right.begin();
+		}
+	}
+
+	*dbg << "merge# = " << left->size() \
+		<< " (depth = " << depth << ")" << std::endl;
+	*dbg << *left;
+
+	return 0;
+}
+
 int MultiSort::MergeSort()
 {
-	std::cerr << "MergeSort: Not supported yet!" << std::endl;
+	int rc;
 
-	return -ENOSYS;
+	*dbg << "Merge sort ... " << std::endl;
+
+	resetCount();
+	_merge_sort( &intList );
+
+	return 0;
 }
 
 int MultiSort::HeapSort()

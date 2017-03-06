@@ -41,6 +41,7 @@ private:
 	unsigned int	bigO_compare_count;
 	unsigned int	bigO_swap_count;
 
+	int	_merge_sort(std::list<SIDLList*> *list, int depth = 0);
 	int	_quick_sort(std::list<SIDLList*> *L, int depth = 0);
 
 protected:
