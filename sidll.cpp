@@ -76,7 +76,7 @@ int SIDLList::insertAtHead( int value )
 }
 
 /* Return: -1) smaller; 0) equal; 1) bigger */
-int SIDLList::compare(SIDLList *his)
+int SIDLList::compare(const SIDLList *his)
 {
 	int rc;
 

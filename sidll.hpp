@@ -86,7 +86,7 @@ public:
 		return sign;
 	}
 
-	int compare(SIDLList *list);
+	int compare(const SIDLList *list);
 
 #if 1
 	friend std::ostream &operator<<(std::ostream &out, const SIDLList &L) {
