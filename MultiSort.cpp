@@ -272,3 +272,36 @@ std::ostream &operator<<(std::ostream &out, const std::list<SIDLList*> &L)
 	out << std::endl;
 	return out;
 }
+
+int MultiSort::test()
+{
+	*dbg << "----- Testing -----" << std::endl;
+
+	resetCount();
+
+	typename std::list<SIDLList*>::iterator i, j, key;
+
+	i = intList.begin();
+	j = std::next( i );
+
+	std::cout << "----- compare -----" << std::endl;
+	if ((*i)->compare(*j) < 0)
+		std::cout << *i << " < " << *j;
+	if ((*i)->compare(*j) == 0)
+		std::cout << *i << " == " << *j;
+	if ((*i)->compare(*j) > 0)
+		std::cout << *i << " > " << *j;
+	std::cout << std::endl;
+
+	std::cout << "----- overload -----" << std::endl;
+	if (*i < *j)
+		std::cout << *i << " < " << *j;
+	if (*i == *j)
+		std::cout << *i << " == " << *j;
+	if (*i > *j)
+		std::cout << *i << " > " << *j;
+	std::cout << std::endl;
+
+	/* Simulate an unsupported return */
+	return -ENOSYS;
+}

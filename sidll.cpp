@@ -127,6 +127,15 @@ int SIDLList::compare(const SIDLList *his)
 	return rc;
 }
 
+#if 0
+bool SIDLList::operator ==(const SIDLList *l) const
+{
+//	return (this->compare(l) == 0);
+	int rc = this->compare(*l);
+	std::cout << "== : " << rc << std::endl;
+	return (rc == 0);
+}
+#endif
 
 #if 0
 std::ostream &operator<<(std::ostream &out, const SIDLList &L)

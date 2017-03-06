@@ -81,6 +81,9 @@ public:
 
 	void statistics( std::ofstream& ofs, std::string& algorithm );
 
+	/* misc functionality testing */
+	int test();
+
 #if 0
 	friend std::ostream &operator<<(std::ostream &out, const MultiSort &S) {
 		for (const auto& i : S.intList) {

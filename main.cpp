@@ -25,6 +25,7 @@ const struct option long_opts[] =
 	{"algorithm",	required_argument,	0,	'a'},
 	{"output",	required_argument,	0,	'o'},
 	{"debug",	no_argument,		0,	'd'},
+	{"test",	no_argument,		0,	't'}, /* internal */
 	{0,0,0,0},
 };
 
@@ -34,6 +35,7 @@ typedef struct _OPT_FLAGS {
 	int	digitsPerNode;	/* digits per node */
 	int	algorithm;	/* <select|insert|merge|heap|quick> */
 	bool	debug;		/* Enable debug */
+	bool	test;		/* Internal: misc testing function */
 } OPT_FLAG;
 
 #if 1
@@ -44,7 +46,8 @@ OPT_FLAG	optFlag = {
 			.oFile = string( "" ),
 			.digitsPerNode = 1,
 			.algorithm = SELECT,
-			.debug = false
+			.debug = false,
+			.test = false
 		};
 #endif
 
@@ -106,7 +109,7 @@ int main(int argc, char* argv[])
 	int opt_index = 0;
 	int opt;
 	string algorithm;
-	while ( (opt = getopt_long(argc, argv, "da:i:n:o:",
+	while ( (opt = getopt_long(argc, argv, "dta:i:n:o:",
 		long_opts, &opt_index)) != -1) {
 		switch (opt) {
 		case 'i': optFlag.iFile = string( optarg );	break;
@@ -128,6 +131,7 @@ int main(int argc, char* argv[])
 				optFlag.algorithm = UNKNOWN;
 			break;
 		case 'd': optFlag.debug = true;		break;
+		case 't': optFlag.test = true;		break;
 		case '?': /* Unknown option (ignore) */
 		default : /* Do nothing */		break;
 		} // End of switch(opt)
@@ -158,6 +162,11 @@ int main(int argc, char* argv[])
 		cerr << "digitsPerNode could not be " \
 			<< optFlag.digitsPerNode << endl;
 		return -EINVAL;
+	}
+
+	/* Testing mode: call test() function instead of sorting */
+	if (optFlag.test) {
+		optFlag.algorithm = UNKNOWN;
 	}
 
 	// create Debug class (DEFAULT_DEBUG_LEVEL), borrow 'opt' variable
@@ -195,6 +204,11 @@ int main(int argc, char* argv[])
 		SIDLList* num = new(nothrow)
 			SIDLList(fmt.getSign(), fmt.getDigits(), optFlag.digitsPerNode);
 
+		if (! num) {
+			cerr << "Why allocation failed ?" << std::endl;
+			break;
+		}
+
 		*dbg << *num;
 
 		mySort.addItem( num );
@@ -216,6 +230,11 @@ int main(int argc, char* argv[])
 	case HEAP:	rc = mySort.HeapSort();		break;
 	case QUICK:	rc = mySort.QuickSort();	break;
 	default:
+		if (optFlag.test) {
+			rc = mySort.test();
+			break;
+		}
+
 		rc = -EINVAL;
 		cerr << "This should not happen!" << endl;
 		break;

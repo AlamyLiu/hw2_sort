@@ -88,6 +88,42 @@ public:
 
 	int compare(const SIDLList *list);
 
+#if 0
+	friend bool operator <(const SIDLList &l, const SIDLList *r) {
+		int rc = l->compare(r);
+		std::cout << "< : " << rc << std::endl;
+		return (rc < 0);
+	}
+#endif
+
+#if 0
+	bool operator <(const SIDLList l) const {
+//		return (this->compare(l) < 0);
+		int rc = compare(l);
+		std::cout << "< : " << rc << std::endl;
+		return (rc < 0);
+	}
+	bool operator >(const SIDLList *l) {
+//		return (this->compare(l) > 0);
+		int rc = compare(l);
+		std::cout << "> : " << rc << std::endl;
+		return (rc > 0);
+	}
+
+	bool operator ==(const SIDLList *l) const;
+
+	friend bool operator ==(const SIDLList &l, const SIDLList &r);
+#endif
+
+#if 0
+	bool operator ==(const SIDLList *l) {
+//		return (this->compare(l) == 0);
+		int rc = compare(l);
+		std::cout << "== : " << rc << std::endl;
+		return (rc == 0);
+	}
+#endif
+
 #if 1
 	friend std::ostream &operator<<(std::ostream &out, const SIDLList &L) {
 		Node *pNode = L.pHead;
