@@ -226,11 +226,143 @@ int MultiSort::MergeSort()
 	return 0;
 }
 
+/* Most heap-sort operation is based on Array
+ *
+ * 0-based index
+ *	 left child: 2n + 1
+ *	right child: 2n + 2
+ *
+ * 1-based index
+ *	 left child: 2n
+ *	right child: 2n + 1
+ *
+ * Since this code use 'list' structure, will use list methods to emulate
+ * Array operations. i.e.: advance(iterator.begin(), n).
+ *
+ * Parameter
+ *	*tree: the tree to heapify
+ *	i: index of the parent node
+ *	depth: recursive call depth
+ */
+int MultiSort::_heapify(std::list<SIDLList*> *tree, int i, int depth)
+{
+	int	size, left, right, max, rc;
+	std::list<SIDLList*>::iterator pNode, pLeft, pRight, pMax;
+
+	/* 0-based formula (we surely have left child) */
+	size = tree->size();
+	left = (i << 1) + 1;
+	right = left + 1;
+
+	if (size <= 1) {
+		/* Empty or only 1 element */
+		return 0;
+	}
+	if (left >= size) {
+		std::cerr << "ERROR: Tree size = " << size \
+			<< ", left child index = " << left << std::endl;
+		/* Something wrong, need debugging */
+		return -EPERM;
+	}
+
+	/* index -> iterator */
+	pNode = tree->begin();	advance( pNode, i );
+	pLeft = pNode;		advance( pLeft, left - i );
+	pRight = pLeft;		advance( pRight, 1 );
+
+	*dbg << "----- size=" << size \
+		<< ", node=[" << i \
+		<< "], l=[" << left \
+		<< "], r=[" << right << "]" << std::endl;
+	*dbg << "pNode = " << *pNode \
+		<< ", pLeft = " << *pLeft;
+	*dbg << ", pRight = ";
+	if (pRight == tree->end()) {
+		*dbg << "(nil)";
+	} else {
+		*dbg << *pRight;
+	}
+	*dbg << std::endl;
+
+	/* Find the maximum one among the three */
+	rc = (*pNode)->compare( *pLeft );
+	if (rc >= 0) {
+		pMax = pNode;
+		max = i;
+	} else {
+		pMax = pLeft;
+		max = left;
+	}
+	if (pRight != tree->end()) {
+		rc = (*pMax)->compare( *pRight );
+		if (rc < 0) {
+			pMax = pRight;
+			max = right;
+		}
+	}
+	*dbg << "Max[" << max << "]=" << *pMax << std::endl;
+
+	/* Maximum one is in child */
+	if (pNode != pMax) {
+		std::swap( *pNode, *pMax );
+		/* Only if it has child */
+		if (((max << 1) + 1) <= (size - 1)) {
+			_heapify( tree, max, depth+1 );
+		}
+	}
+
+	*dbg << *tree;
+
+	return 0;
+}
+
+/*
+ * This code will implement Maximum-Heap tree
+ * Like the examples at:
+ *	https://www.cs.usfca.edu/~galles/visualization/HeapSort.html
+ *	http://faculty.simpson.edu/lydia.sinapova/www/cmsc250/LN250_Weiss/L13-HeapSortEx.htm
+ *
+ */
 int MultiSort::HeapSort()
 {
-	std::cerr << "HeapSort: Not supported yet!" << std::endl;
+	int	i;
 
-	return -ENOSYS;
+	*dbg << "Heap sort ... " << std::endl;
+
+	resetCount();
+
+	/* Reversely walk: heapify each parent node */
+	i = (intList.size() >> 1);
+	if (i == 0) {
+		/* Only 0 or 1 number, nothing to sort */
+		return 0;
+	}
+
+	*dbg << "heapify ..." << std::endl;
+	/* 0-based node index */
+	while (i--) {
+		_heapify( &intList, i );
+	}
+
+	*dbg << "sorting ..." << std::endl;
+	/* Now the tree is max-heapified, time to sort */
+	std::list<SIDLList*> sort;
+	while (intList.size() > 1) {
+		/* move the 1st/maximum one to the front of 'sort' list */
+		sort.push_front( intList.front() );
+		intList.pop_front();
+
+		/* move the last one to the top */
+		intList.push_front( intList.back() );
+		intList.pop_back();
+
+		_heapify( &intList, 0 );
+	}	/* End of while */
+
+	/* Finally, move it back */
+	intList.splice( intList.end(), sort, sort.begin(), sort.end() );
+
+	return 0;
 }
 
 /* Sort a range of list */
