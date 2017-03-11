@@ -306,7 +306,7 @@ int MultiSort::_heapify(std::list<SIDLList*> *tree, int i, int depth)
 	if (pNode != pMax) {
 		std::swap( *pNode, *pMax );
 		/* Only if it has child */
-		if (((max << 1) + 1) <= (size - 1)) {
+		if (((max << 1) + 1) < size) {
 			_heapify( tree, max, depth+1 );
 		}
 	}
