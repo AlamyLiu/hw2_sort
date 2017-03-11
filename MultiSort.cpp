@@ -384,8 +384,10 @@ int MultiSort::test()
 
 	resetCount();
 
+#if 0
 	typename std::list<SIDLList*>::iterator i, j, key;
 
+	/* "<<" overloading operation testing */
 	i = intList.begin();
 	j = std::next( i );
 
@@ -406,6 +408,59 @@ int MultiSort::test()
 	if (*i > *j)
 		std::cout << *i << " > " << *j;
 	std::cout << std::endl;
+#endif
+
+#if 1
+	/* Heap right child detection testing */
+	int	i, left, right, size;
+	std::list<SIDLList*> *tree;
+	std::list<SIDLList*>::iterator pNode, pLeft, pRight;
+
+	tree = &intList;
+	i = (tree->size() >> 1);
+	if (i == 0) {
+		/* Only 0 or 1 number, nothing to sort */
+		std::cout << "Empty or only 1 element" << std::endl;
+		return -ENOSYS;
+	}
+	/* 0-based node index */
+	while (i--) {
+		left = (i << 1) + 1;
+		right = left + 1;
+
+		std::cout << "Node[" << i \
+			<< "], l=[" << left \
+			<< "], r=[" << right \
+			<< "]" << std::endl;
+
+		if (right >= size -1 )
+
+		pNode = tree->begin();	advance( pNode, i );
+		pLeft = pNode;		advance( pLeft, left - i );
+		pRight = pLeft;		advance( pRight, 1 );
+
+		std::cout << "pNode = " << *pNode \
+			<< ", pLeft = " << *pLeft;
+		std::cout << ", pRight = ";
+		if (pRight == tree->end()) {
+			std::cout << "Nil";
+		} else {
+			std::cout << *pRight;
+		}
+		std::cout << std::endl;
+
+		advance( pRight, 3 );
+		std::cout << "pRight+3 = ";
+		if (pRight == tree->end()) {
+			std::cout << "Nil";
+		} else {
+			std::cout << *pRight;
+		}
+		std::cout << std::endl;
+	}
+
+
+#endif
 
 	/* Simulate an unsupported return */
 	return -ENOSYS;
