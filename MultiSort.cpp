@@ -285,6 +285,8 @@ int MultiSort::_heapify(std::list<SIDLList*> *tree, int i, int depth)
 	*dbg << std::endl;
 
 	/* Find the maximum one among the three */
+	bigO_compare_count++;
+	sort_compare_count++;
 	rc = (*pNode)->compare( *pLeft );
 	if (rc >= 0) {
 		pMax = pNode;
@@ -294,6 +296,8 @@ int MultiSort::_heapify(std::list<SIDLList*> *tree, int i, int depth)
 		max = left;
 	}
 	if (pRight != tree->end()) {
+		bigO_compare_count++;
+		sort_compare_count++;
 		rc = (*pMax)->compare( *pRight );
 		if (rc < 0) {
 			pMax = pRight;
@@ -303,11 +307,27 @@ int MultiSort::_heapify(std::list<SIDLList*> *tree, int i, int depth)
 	*dbg << "Max[" << max << "]=" << *pMax << std::endl;
 
 	/* Maximum one is in child */
+	bigO_swap_count++;
 	if (pNode != pMax) {
+		sort_swap_count++;
 		std::swap( *pNode, *pMax );
 		/* Only if it has child */
 		if (((max << 1) + 1) < size) {
 			_heapify( tree, max, depth+1 );
+		}
+	} else {
+		/* Simulate the bigO case, go as deep as child goes */
+		max = (max << 1) + 1;	/* dive into left child */
+		while (max < size) {
+			bigO_compare_count++;
+			/* right child */
+			if (max + 1 < size) {
+				bigO_compare_count++;
+			}
+			bigO_swap_count++;
+
+			/* dive into left child */
+			max = (max << 1) + 1;
 		}
 	}
 
@@ -355,6 +375,9 @@ int MultiSort::HeapSort()
 		/* move the last one to the top */
 		intList.push_front( intList.back() );
 		intList.pop_back();
+
+		bigO_swap_count++;
+		sort_swap_count++;
 
 		_heapify( &intList, 0 );
 	}	/* End of while */
